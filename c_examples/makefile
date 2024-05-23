@@ -22,4 +22,4 @@ example:
 	@echo "Example new_ex.c made from template"
 
 clean:
-	rm -f $(PROGS)
+	rm -f a.out $(PROGS)
