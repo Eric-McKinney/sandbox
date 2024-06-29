@@ -21,7 +21,7 @@ class ProgressBar:
         self.empty_sym: str = empty_sym
         self.load_loop: list[str] = load_loop
         self.end_sym: str = end_sym
-        self.bar_length: int = bar_length
+        self.length: int = bar_length
 
     def increment_progress(self) -> None:
         self.update_progress(self.curr_value + 1)
@@ -29,8 +29,8 @@ class ProgressBar:
     def update_progress(self, new_value: int) -> None:
         self.curr_value = new_value
         self.progress = new_value / self.capacity
-        self.num_full_syms = math.floor(self.progress * self.bar_length) if new_value < self.capacity else self.bar_length
-        self.num_empty_syms = self.bar_length - self.num_full_syms - 1
+        self.num_full_syms = math.floor(self.progress * self.length) if new_value < self.capacity else self.length
+        self.num_empty_syms = self.length - self.num_full_syms - 1
 
     def __repr__(self) -> str:
         return self.start_sym + (self.num_full_syms * self.full_sym) \
@@ -38,20 +38,25 @@ class ProgressBar:
             + (self.num_empty_syms * self.empty_sym) + self.end_sym
 
     def demo(self) -> None:
+        print("\033[?25l", end="")
         for _ in range(self.capacity):
             print(f"{self}\033[1A")
             self.increment_progress()
             sleep(0.5)
 
         print(self)
+        print("\033[?25h", end="")
 
 
 def main() -> None:
-    bar: ProgressBar = ProgressBar(50)
+    bar: ProgressBar = ProgressBar(40)
     bar.demo()
 
-    bar2 = ProgressBar(50, start_sym="<", full_sym="-", end_sym=">", load_loop=[".", ",", "*", "o", "O", "@"])
+    bar2 = ProgressBar(40, start_sym="<", full_sym="-", end_sym=">", load_loop=[".", ",", "*", "o", "O", "@"])
     bar2.demo()
+
+    bar3 = ProgressBar(40, bar_length=30)
+    bar3.demo()
 
 
 if __name__ == "__main__":
