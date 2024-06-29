@@ -8,7 +8,7 @@ int main() {
     }
     /**********************************************/
     /* a is limited to the if statement scope, so */
-    /* below line causes a comilation error       */
+    /* below line causes a compilation error      */
     /**********************************************/
 
     /*printf("%d\n", a);*/
