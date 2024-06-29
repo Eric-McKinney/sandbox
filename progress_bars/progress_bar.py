@@ -1,3 +1,4 @@
+import threading
 import math
 from time import sleep
 
@@ -10,18 +11,24 @@ class ProgressBar:
                  empty_sym: str = " ",
                  load_loop: list[str] = ["|", "/", "-", "\\"],
                  end_sym: str = "]",
-                 bar_length: int = 10):
+                 bar_length: int = 10,
+                 tick_rate: int = 2):
+        # not (directly) from params
         self.curr_value: int = 0
         self.num_full_syms: int = 0
         self.num_empty_syms: int = bar_length - 1
-        self.capacity: int = capacity
         self.progress: float = 0
+        self.tick_count: int = 0
+
+        # from params
+        self.capacity: int = capacity
         self.start_sym: str = start_sym
         self.full_sym: str = full_sym
         self.empty_sym: str = empty_sym
         self.load_loop: list[str] = load_loop
         self.end_sym: str = end_sym
         self.length: int = bar_length
+        self.tick_rate: int = tick_rate  # in Hz
 
     def increment_progress(self) -> None:
         self.update_progress(self.curr_value + 1)
@@ -32,7 +39,7 @@ class ProgressBar:
         self.num_full_syms = math.floor(self.progress * self.length) if new_value < self.capacity else self.length
         self.num_empty_syms = self.length - self.num_full_syms - 1
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return self.start_sym + (self.num_full_syms * self.full_sym) \
             + (self.load_loop[self.curr_value % len(self.load_loop)] if self.curr_value < self.capacity else "") \
             + (self.num_empty_syms * self.empty_sym) + self.end_sym
