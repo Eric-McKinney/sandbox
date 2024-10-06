@@ -12,6 +12,9 @@ all: $(PROGS)
 %_ex: %_ex.c
 	$(CC) $(CFLAGS) -o $@ $<
 
+readline_ex: readline_ex.c
+	$(CC) $(CFLAGS) -o $@ $< -lreadline
+
 test:
 	@echo Source: $(SRC)
 	@echo Progs: $(PROGS)
